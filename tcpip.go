@@ -17,8 +17,8 @@ const (
 	CancelRemoteForwardRequest = "cancel-tcpip-forward" // RFC 4254 7.1
 )
 
-// tcpipForward is structure for RFC 4254 7.1 "tcpip-forward" request
-type tcpipForward struct {
+// TcpipForward is structure for RFC 4254 7.1 "tcpip-forward" request
+type TcpipForward struct {
 	Host string
 	Port uint32
 }
@@ -45,7 +45,7 @@ func TCPIPForwardRequestHandler() GlobalRequestHandler {
 // TODO: Need to add state to handle "cancel-tcpip-forward"
 func TCPIPForwardRequest(req *ssh.Request, sshConn ssh.Conn) {
 
-	t := tcpipForward{}
+	t := TcpipForward{}
 	reply := (t.Port == 0) && req.WantReply
 	ssh.Unmarshal(req.Payload, &t)
 	addr := fmt.Sprintf("%s:%d", t.Host, t.Port)
