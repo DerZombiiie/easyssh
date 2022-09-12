@@ -23,15 +23,15 @@ type TcpipForward struct {
 	Port uint32
 }
 
-// directForward is struxture for RFC 4254 7.2 - can be used for "forwarded-tcpip" and "direct-tcpip"
-type directForward struct {
+// DirectForward is struxture for RFC 4254 7.2 - can be used for "forwarded-tcpip" and "direct-tcpip"
+type DirectForward struct {
 	Host1 string
 	Port1 uint32
 	Host2 string
 	Port2 uint32
 }
 
-func (p directForward) String() string {
+func (p DirectForward) String() string {
 	return fmt.Sprintf("CONNECT: %s:%d FROM: %s:%d", p.Host1, p.Port1, p.Host2, p.Port2)
 }
 
@@ -86,7 +86,7 @@ func TCPIPForwardRequest(req *ssh.Request, sshConn ssh.Conn) {
 					continue
 				}
 				go func(conn net.Conn) {
-					p := directForward{}
+					p := DirectForward{}
 					var err error
 
 					var portnum int
@@ -148,7 +148,7 @@ func DirectPortForwardHandler() ChannelHandler { return ChannelHandlerFunc(Direc
 // Should be  to channel type - "direct-tcpip"  - RFC 4254 7.2
 func DirectPortForwardChannel(newChannel ssh.NewChannel, channel ssh.Channel, reqs <-chan *ssh.Request, sshConn ssh.Conn) {
 
-	p := directForward{}
+	p := DirectForward{}
 	ssh.Unmarshal(newChannel.ExtraData(), &p)
 	logger.Println(p)
 
