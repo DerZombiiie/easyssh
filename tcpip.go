@@ -61,7 +61,7 @@ func TCPIPForwardRequest(req *ssh.Request, sshConn ssh.Conn) {
 
 	if reply { // Client sent port 0. let them know which port is actually being used
 
-		_, port, err := getHostPortFromAddr(ln.Addr())
+		_, port, err := GetHostPortFromAddr(ln.Addr())
 		if err != nil {
 			return
 		}
@@ -92,7 +92,7 @@ func TCPIPForwardRequest(req *ssh.Request, sshConn ssh.Conn) {
 					var portnum int
 					p.Host1 = t.Host
 					p.Port1 = t.Port
-					p.Host2, portnum, err = getHostPortFromAddr(conn.RemoteAddr())
+					p.Host2, portnum, err = GetHostPortFromAddr(conn.RemoteAddr())
 					if err != nil {
 
 						return
@@ -131,7 +131,7 @@ func TCPIPForwardRequest(req *ssh.Request, sshConn ssh.Conn) {
 
 }
 
-func getHostPortFromAddr(addr net.Addr) (host string, port int, err error) {
+func GetHostPortFromAddr(addr net.Addr) (host string, port int, err error) {
 	host, portString, err := net.SplitHostPort(addr.String())
 	if err != nil {
 		return
